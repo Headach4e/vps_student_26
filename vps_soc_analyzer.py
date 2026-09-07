@@ -11,6 +11,11 @@ def extract_ip(log_line: str) -> str | None:
     # 1. Проверьте, содержит ли строка 'Failed password'
     # 2. Используйте регулярное выражение для поиска IPv4-адреса после 'from'
     # 3. Верните найденный IP-адрес или None
+    if "Failed password" in log_line or "Invalid user" in log_line:
+        match = re.search(r'from\s+(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})', log_line)
+        if match:
+            return match.group(1)
+    return None
     pass
 
 def group_by_ip(log_lines: list[str]) -> dict[str, int]:
@@ -24,9 +29,15 @@ def group_by_ip(log_lines: list[str]) -> dict[str, int]:
     # 3. Извлеките IP-адрес из каждой строки с помощью функции extract_ip
     # 4. Если IP найден, обновите счетчик в словаре
     # 5. Верните полученный словарь
+    ip_counts = {}
+    for line in log_lines:
+        ip = extract_ip(line)
+        if ip:
+            ip_counts[ip] = ip_counts.get(ip, 0) + 1
+    return ip_counts
     pass
 
-def detect_brute_force(ip_counts: dict[str, int], threshold: int = 5) -> list[str]:
+def detect_brute_force(ip_counts: dict[str, int], threshold: int = 5) -> set[str]:
     """
     Кейс 3: Детектор SSH Brute-Force.
     Выявляет IP-адреса, количество неудачных входов которых превышает порог threshold.
@@ -35,6 +46,11 @@ def detect_brute_force(ip_counts: dict[str, int], threshold: int = 5) -> list[st
     # 1. Проанализируйте переданный словарь ip_counts
     # 2. Выберите все IP, у которых количество попыток больше или равно threshold
     # 3. Верните список этих IP-адресов
+    result = set()
+    for ip, count in ip_counts.items():
+        if count >= threshold:
+            result.add(ip)
+    return result
     pass
 
 def detect_suspicious_paths(log_line: str) -> bool:
