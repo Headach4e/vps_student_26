@@ -47,15 +47,15 @@ def run_pipeline():
         
     # TODO: Вызовите функцию группировки по IP из модуля analyzer
     # ip_attempts = ...
-    ip_attempts = {} # Заглушка
+    ip_attempts = analyzer.group_by_ip(ssh_logs) # Заглушка
     
     print(f"    - Всего уникальных IP, совершивших неудачный вход: {len(ip_attempts)}")
     for ip, count in sorted(ip_attempts.items(), key=lambda x: x[1], reverse=True)[:3]:
         print(f"      * IP: {ip} - {count} неудачных попыток")
         
     # TODO: Вызовите функцию детектора брутфорса
-    # bf_alerts = ...
-    bf_alerts = [] # Заглушка
+    # bf_alerts = ...   
+    bf_alerts = analyzer.detect_brute_force(ip_attempts) # Заглушка
     
     print(f"    - ОБНАРУЖЕНО БРУТФОРС-АТАК (>= 5 попыток): {len(bf_alerts)}")
     for ip in bf_alerts:
