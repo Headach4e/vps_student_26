@@ -13,7 +13,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 #     sys.exit(1)
 
 # Подключаем модуль с аналитикой (его пишет студент).
-# Если файла нет — сразу падаем с понятным сообщением, а не с traceback.
+# Если файла нет — сразу падаем с понятным сообщением, а не с traceback
 try:
     import vps_soc_analyzer as analyzer
 except ImportError:

@@ -37,7 +37,7 @@ def extract_ip(log_line: str) -> str | None:
         return None
 
     # Ни "Failed password", ни "Invalid user" в строке нет — это не строка об атаке,
-    # игнорируем её.
+    # игнорируем её
     return None
 
 
